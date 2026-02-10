@@ -1,0 +1,58 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Environment
+.env
+.env.local
+.env*.local
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MongoDB
+data/
+mongod.log
+
+# Logs
+logs/
+*.log
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Backups
+backups/
+*.bak
+
+# Build
+dist/
+build/
+public/build/
+*.map
+
+# Database dumps
+*.dump
+*.backup
+
+# Email credentials (never commit)
+email_credentials.json
+smtp_config.json
+
+# Test files
+test-*.js
+debug-*.js
