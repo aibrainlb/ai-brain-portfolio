@@ -1,43 +1,33 @@
 {
   "name": "ai-brain-portfolio",
   "version": "3.0.0",
-  "description": "AI Brain Portfolio - Full Stack Application with Contact Form",
-  "main": "server/server.js",
+  "description": "AI-powered portfolio with MongoDB backend",
+  "main": "backend/server.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
+    "build": "echo 'No build step required'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "portfolio",
-    "ai",
     "mongodb",
     "express",
-    "sendgrid",
-    "contact-form"
+    "nodejs"
   ],
-  "author": "Andy Ters",
+  "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "@sendgrid/mail": "^8.1.0",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-rate-limit": "^7.1.4",
-    "express-validator": "^7.0.1",
-    "form-data": "^4.0.0",
-    "helmet": "^7.1.0",
-    "mailgun.js": "^9.3.0",
-    "mongoose": "^7.6.3",
-    "morgan": "^1.10.0",
-    "nodemailer": "^6.10.1",
-    "resend": "^6.9.1"
+    "body-parser": "^1.20.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  },
-  "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
   }
 }
