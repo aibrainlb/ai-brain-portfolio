@@ -353,39 +353,73 @@ process.on('unhandledRejection', (reason, promise) => {
 /**
  * Start Server
  */
-const server = app.listen(PORT, () => {
-  console.log('\n' + '='.repeat(70));
-  console.log('🚀 AI BRAIN PORTFOLIO SERVER');
-  console.log('='.repeat(70));
-  console.log(`📍 Port: ${PORT}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development (not set)'}`);
-  console.log(`🔗 Local: http://localhost:${PORT}`);
-  console.log(`📁 Public: ${path.join(__dirname, 'public')}`);
-  console.log(`🗄️  Database: Connecting...`);
-  console.log('='.repeat(70));
-  console.log('\n📋 Available Endpoints:');
-  console.log('   GET  /api/health          - Health check');
-  console.log('   GET  /api/stats           - Statistics');
-  console.log('   GET  /api/projects        - Portfolio projects');
-  console.log('   GET  /api/skills          - Technical skills');
-  console.log('   POST /api/contact         - Contact form');
-  console.log('   GET  /api/db/health       - Database health');
-  console.log('   GET  /api/db/status       - Database status');
-  console.log('   GET  /api/db/stats        - Database statistics');
-  console.log('='.repeat(70) + '\n');
-  
-  // Check database connection after 2 seconds
-  setTimeout(async () => {
-    try {
-      const status = connectDB.getStatus();
-      console.log(`✅ Database Status: ${status.connected ? 'Connected' : 'Disconnected'}`);
-      console.log(`   Ready State: ${status.readyStateName}`);
-      console.log(`   Database: ${status.database}`);
-      console.log(`   Host: ${status.host}`);
-    } catch (error) {
-      console.error('❌ Database Status Check Failed:', error.message);
-    }
-  }, 2000);
-});
+/**
+ * Start Server (Local Development Only)
+ * Vercel handles this automatically in production
+ */
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.log('\n' + '='.repeat(70));
+    console.log('🚀 AI BRAIN PORTFOLIO SERVER');
+    console.log('='.repeat(70));
+    console.log(`📍 Port: ${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development (not set)'}`);
+    console.log(`🔗 Local: http://localhost:${PORT}`);
+    console.log(`📁 Public: ${path.join(__dirname, 'public')}`);
+    console.log(`🗄️  Database: Connecting...`);
+    console.log('='.repeat(70));
+    console.log('\n📋 Available Endpoints:');
+    console.log('   GET  /api/health          - Health check');
+    console.log('   GET  /api/stats           - Statistics');
+    console.log('   GET  /api/projects        - Portfolio projects');
+    console.log('   GET  /api/skills          - Technical skills');
+    console.log('   POST /api/contact         - Contact form');
+    console.log('   GET  /api/db/health       - Database health');
+    console.log('   GET  /api/db/status       - Database status');
+    console.log('   GET  /api/db/stats        - Database statistics');
+    console.log('='.repeat(70) + '\n');
+    
+    // Check database connection after 2 seconds
+    setTimeout(async () => {
+      try {
+        const status = connectDB.getStatus();
+        console.log(`✅ Database Status: ${status.connected ? 'Connected' : 'Disconnected'}`);
+        console.log(`   Ready State: ${status.readyStateName}`);
+        console.log(`   Database: ${status.database}`);
+        console.log(`   Host: ${status.host}`);
+      } catch (error) {
+        console.error('❌ Database Status Check Failed:', error.message);
+      }
+    }, 2000);
+  });
 
-module.exports = { app, server };
+  /**
+   * Graceful Shutdown (Local Development Only)
+   */
+  const gracefulShutdown = async (signal) => {
+    console.log(`\n🔄 Received ${signal}. Starting graceful shutdown...`);
+    
+    try {
+      server.close(() => {
+        console.log('✅ HTTP server closed');
+      });
+      
+      await connectDB.disconnect();
+      
+      console.log('👋 Graceful shutdown completed');
+      process.exit(0);
+      
+    } catch (error) {
+      console.error('❌ Error during shutdown:', error);
+      process.exit(1);
+    }
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+}
+
+/**
+ * Export for Vercel Serverless Functions
+ */
+module.exports = app;
