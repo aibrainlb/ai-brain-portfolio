@@ -350,215 +350,148 @@ section h2 {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-/* ===================================================
-   ABOUT SECTION – CLEAN BLUE MOBILE DESIGN
+//* ===================================================
+   ABOUT SECTION – MINIMAL BLUE MOBILE DESIGN
    =================================================== */
 @media (max-width: 768px) {
     #about {
-        background: #e6f2ff !important;  /* very light blue background */
+        background: #f0f7ff !important;  /* very light blue */
         padding: 40px 15px !important;
     }
 
-    /* Section title */
     #about .section-title h2 {
-        color: #004080 !important;       /* dark blue for contrast */
+        color: #0a2a44 !important;       /* dark navy */
         font-size: 1.8rem !important;
-        margin-bottom: 20px !important;
         text-align: center !important;
+        margin-bottom: 10px !important;
+        font-weight: 600 !important;
     }
 
     #about .section-subtitle {
-        color: #0066cc !important;
-        font-size: 1rem !important;
+        color: #2c6b9e !important;       /* medium blue */
         text-align: center !important;
+        font-size: 1rem !important;
+        margin-bottom: 25px !important;
     }
 
-    /* About text */
-    #about .about-text {
+    /* Main content card */
+    #about .about-content {
         background: white !important;
+        border-radius: 18px !important;
         padding: 25px 20px !important;
-        border-radius: 16px !important;
-        box-shadow: 0 4px 12px rgba(0, 64, 128, 0.1) !important;
-        margin-bottom: 20px !important;
+        box-shadow: 0 4px 12px rgba(0, 60, 120, 0.08) !important;
     }
 
-    #about .about-text h3 {
-        color: #004080 !important;
+    #about h3 {
+        color: #0a2a44 !important;
         font-size: 1.3rem !important;
         margin: 0 0 15px 0 !important;
-        border-left: 4px solid #2196F3 !important;
+        font-weight: 600 !important;
+        border-left: 4px solid #1e81d9 !important;
         padding-left: 12px !important;
     }
 
-    #about .about-text p {
-        color: #1a1a1a !important;
+    #about p {
+        color: #1a2c3e !important;
         font-size: 0.95rem !important;
         line-height: 1.6 !important;
-        margin-bottom: 15px !important;
+        margin-bottom: 20px !important;
     }
 
-    /* Highlight boxes – blue theme */
+    /* Highlights list */
     .about-highlights {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
+        gap: 12px !important;
         margin-top: 25px !important;
     }
 
     .highlight {
         display: flex !important;
-        align-items: center !important;
-        background: white !important;
-        border-left: 4px solid #2196F3 !important;
-        padding: 14px 18px !important;
-        border-radius: 12px !important;
-        box-shadow: 0 2px 8px rgba(0, 102, 204, 0.08) !important;
-        transition: all 0.2s ease !important;
-    }
-
-    .highlight:hover {
-        transform: translateX(5px) !important;
-        box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15) !important;
+        align-items: flex-start !important;
+        background: #f5faff !important;
+        border-radius: 14px !important;
+        padding: 14px 16px !important;
+        border: 1px solid #d4e4f5 !important;
     }
 
     .highlight i {
-        color: #2196F3 !important;
-        font-size: 1.4rem !important;
-        margin-right: 15px !important;
-        min-width: 30px !important;
+        color: #1e81d9 !important;
+        font-size: 1.3rem !important;
+        min-width: 32px !important;
+        margin-right: 12px !important;
         text-align: center !important;
+        margin-top: 2px !important;
     }
 
     .highlight span {
-        color: #003366 !important;
+        color: #0a2a44 !important;
         font-size: 0.95rem !important;
         line-height: 1.5 !important;
         word-break: break-word !important;
         flex: 1 !important;
     }
 
-    /* Brain visual – simplified */
+    /* Visual / logo area */
     #about .about-visual {
-        margin: 30px 0 0 !important;
         display: flex !important;
         justify-content: center !important;
+        margin: 30px 0 0 !important;
     }
 
-    #about .ai-brain {
-        position: relative !important;
-        width: 200px !important;
-        height: auto !important;
-    }
-
-    #about .brain-logo {
+    .ai-brain {
         width: 160px !important;
         height: auto !important;
-        border-radius: 20px !important;
-        box-shadow: 0 6px 16px rgba(0, 102, 204, 0.2) !important;
     }
 
-    /* Hide extra decorative elements */
+    .brain-logo {
+        width: 100% !important;
+        height: auto !important;
+        border-radius: 18px !important;
+        box-shadow: 0 6px 14px rgba(0, 70, 140, 0.15) !important;
+    }
+
+    /* Hide decorative brain lobes and extra text */
     .brain-lobe, .ai-subtext {
         display: none !important;
     }
 
-    /* Stats boxes if present – blue theme */
-    #about .stat-card,
-    #about .stat-box {
+    /* Optional stats boxes (if present) */
+    #about .stat-card {
         background: white !important;
-        border: 1px solid #cce0f0 !important;
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         padding: 15px !important;
+        border: 1px solid #cde1f2 !important;
         text-align: center !important;
+        margin: 10px 0 !important;
     }
 
     #about .stat-number {
-        color: #004080 !important;
-        font-size: 2rem !important;
-        font-weight: 700 !important;
+        color: #0a2a44 !important;
+        font-size: 1.8rem !important;
+        font-weight: 600 !important;
     }
 
     #about .stat-label {
-        color: #0066cc !important;
+        color: #2c6b9e !important;
         font-size: 0.9rem !important;
     }
 }
 
-/* Extra small screens (≤480px) */
+/* Small phones */
 @media (max-width: 480px) {
-    #about .about-text {
+    #about .about-content {
         padding: 20px 15px !important;
     }
-
     .highlight {
-        padding: 12px 15px !important;
+        padding: 12px 14px !important;
     }
-
     .highlight i {
         font-size: 1.2rem !important;
-        margin-right: 12px !important;
+        min-width: 28px !important;
     }
-
     .highlight span {
         font-size: 0.9rem !important;
-    }
-}
-
-/* ================================================
-   ANIMATIONS - Works on all sizes
-   ================================================ */
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.about-card,
-.content-item,
-.expertise-item,
-.stat-box,
-.why-item {
-    animation: fadeInUp 0.6s ease-out;
-    animation-fill-mode: both;
-}
-
-/* Staggered animation delays */
-.about-card:nth-child(1) { animation-delay: 0.1s; }
-.about-card:nth-child(2) { animation-delay: 0.2s; }
-.about-card:nth-child(3) { animation-delay: 0.3s; }
-
-.content-item:nth-child(1) { animation-delay: 0.1s; }
-.content-item:nth-child(2) { animation-delay: 0.15s; }
-.content-item:nth-child(3) { animation-delay: 0.2s; }
-.content-item:nth-child(4) { animation-delay: 0.25s; }
-
-/* ================================================
-   PRINT STYLES
-   ================================================ */
-
-@media print {
-    .about-cta,
-    .cta-buttons {
-        display: none;
-    }
-    
-    #about {
-        padding: 20px;
-        background: white;
-    }
-    
-    .about-card,
-    .content-item,
-    .stat-box,
-    .why-item {
-        break-inside: avoid;
-        page-break-inside: avoid;
     }
 }
 /* ================================================
