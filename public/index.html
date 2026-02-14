@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
 
 </script>
     <meta charset="UTF-8">
@@ -13,6 +14,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile-fix-addon.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="mobile-fix-addon.css">
     <style>
 :root {
     /* Enhanced Color Scheme */
@@ -2039,7 +2044,8 @@ footer::before {
             </nav>
         </div>
     </header>
-    
+
+    </script>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
@@ -2138,7 +2144,22 @@ footer::before {
             </div>
         </div>
     </section>
-
+<head>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        /* Paste style.css content here */
+        :root { --primary: #2196F3; }
+        * { margin: 0; padding: 0; }
+        /* ... rest of your CSS ... */
+        
+        /* Paste FINAL-COMPLETE-FIX.css content here */
+        @media (max-width: 768px) {
+            header#header { position: fixed !important; }
+            #about p { font-size: 1.05rem !important; }
+            /* ... rest of mobile fixes ... */
+        }
+    </style>
+</head>
     <!-- Skills Section -->
     <section id="skills">
         <div class="grid-pattern"></div>

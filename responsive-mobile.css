@@ -1,0 +1,627 @@
+/* ============================================
+   MOBILE-FIRST RESPONSIVE DESIGN
+   AI Brain Portfolio - Fully Responsive
+   ============================================ */
+
+/* ====================
+   BASE RESPONSIVE SETTINGS
+   ==================== */
+
+/* Mobile First - Base styles for phones */
+@media (max-width: 768px) {
+    
+    /* Typography Adjustments */
+    body {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    
+    h1 {
+        font-size: 28px !important;
+        line-height: 1.2;
+    }
+    
+    h2 {
+        font-size: 24px !important;
+        line-height: 1.3;
+    }
+    
+    h3 {
+        font-size: 20px !important;
+    }
+    
+    h4 {
+        font-size: 18px !important;
+    }
+    
+    p {
+        font-size: 14px;
+    }
+    
+    /* Container */
+    .container {
+        width: 95%;
+        padding: 0 15px;
+    }
+    
+    /* Sections */
+    section {
+        padding: 60px 0 !important;
+    }
+    
+    /* ====================
+       NAVIGATION - MOBILE
+       ==================== */
+    
+    nav {
+        padding: 15px 0 !important;
+    }
+    
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .logo {
+        font-size: 24px !important;
+        text-align: center;
+    }
+    
+    .logo img {
+        max-width: 150px !important;
+        height: auto;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-links a {
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+        display: block;
+        width: 100%;
+    }
+    
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+        display: block !important;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 20px;
+        z-index: 1000;
+    }
+    
+    .nav-links.active {
+        display: flex !important;
+    }
+    
+    /* ====================
+       HERO SECTION - MOBILE
+       ==================== */
+    
+    .hero {
+        min-height: auto !important;
+        padding: 80px 0 60px !important;
+    }
+    
+    .hero-content {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 30px !important;
+    }
+    
+    .hero-text {
+        max-width: 100% !important;
+    }
+    
+    .hero h1 {
+        font-size: 32px !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 16px !important;
+    }
+    
+    .hero p {
+        font-size: 14px !important;
+    }
+    
+    .hero-image {
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0 auto;
+    }
+    
+    .hero-image img {
+        width: 100% !important;
+        height: auto !important;
+    }
+    
+    .hero-buttons {
+        flex-direction: column !important;
+        gap: 15px !important;
+        width: 100%;
+    }
+    
+    .hero-buttons .btn {
+        width: 100% !important;
+        padding: 15px 25px !important;
+    }
+    
+    /* ====================
+       ABOUT SECTION - MOBILE
+       ==================== */
+    
+    .about-content {
+        flex-direction: column !important;
+        gap: 30px !important;
+    }
+    
+    .about-image {
+        width: 100% !important;
+        max-width: 250px !important;
+        margin: 0 auto;
+    }
+    
+    .about-text {
+        width: 100% !important;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .stat-card {
+        padding: 20px !important;
+    }
+    
+    .stat-number {
+        font-size: 28px !important;
+    }
+    
+    .stat-label {
+        font-size: 13px !important;
+    }
+    
+    /* ====================
+       SKILLS SECTION - MOBILE
+       ==================== */
+    
+    .skills-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    .skill-category {
+        padding: 20px !important;
+    }
+    
+    .skill-item {
+        font-size: 13px !important;
+        padding: 8px 12px !important;
+    }
+    
+    /* ====================
+       PROJECTS SECTION - MOBILE
+       ==================== */
+    
+    .projects-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .project-card {
+        padding: 20px !important;
+    }
+    
+    .project-image {
+        height: 180px !important;
+    }
+    
+    .project-title {
+        font-size: 18px !important;
+    }
+    
+    .project-description {
+        font-size: 13px !important;
+    }
+    
+    .tech-stack {
+        flex-wrap: wrap;
+        gap: 6px !important;
+    }
+    
+    .tech-tag {
+        font-size: 11px !important;
+        padding: 5px 10px !important;
+    }
+    
+    .project-links {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .project-links .btn {
+        width: 100% !important;
+    }
+    
+    /* ====================
+       CONTACT SECTION - MOBILE
+       ==================== */
+    
+    .contact-container {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+    }
+    
+    .contact-info {
+        order: 2;
+    }
+    
+    .contact-form {
+        order: 1;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        font-size: 14px !important;
+        padding: 12px !important;
+    }
+    
+    .submit-btn {
+        width: 100% !important;
+        padding: 15px !important;
+        font-size: 16px !important;
+    }
+    
+    .contact-card {
+        padding: 15px !important;
+        font-size: 13px !important;
+    }
+    
+    /* ====================
+       FOOTER - MOBILE
+       ==================== */
+    
+    .footer-content {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 20px !important;
+    }
+    
+    .footer-links {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .social-links {
+        justify-content: center !important;
+    }
+    
+    /* ====================
+       BUTTONS - MOBILE
+       ==================== */
+    
+    .btn {
+        padding: 12px 20px !important;
+        font-size: 14px !important;
+    }
+    
+    .btn-lg {
+        padding: 15px 25px !important;
+        font-size: 16px !important;
+    }
+    
+    /* ====================
+       CARDS - MOBILE
+       ==================== */
+    
+    .card {
+        padding: 20px !important;
+    }
+    
+    /* ====================
+       MODALS - MOBILE
+       ==================== */
+    
+    .modal-content {
+        width: 95% !important;
+        margin: 20px auto !important;
+        padding: 20px !important;
+    }
+    
+    /* ====================
+       ANIMATIONS - MOBILE
+       ==================== */
+    
+    /* Reduce animations on mobile for performance */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+}
+
+/* ====================
+   TABLET (768px - 1024px)
+   ==================== */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    
+    .container {
+        width: 92%;
+    }
+    
+    section {
+        padding: 80px 0 !important;
+    }
+    
+    h1 {
+        font-size: 36px !important;
+    }
+    
+    h2 {
+        font-size: 30px !important;
+    }
+    
+    /* Grid adjustments for tablet */
+    .skills-grid,
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .hero-content {
+        gap: 40px !important;
+    }
+    
+    .hero h1 {
+        font-size: 42px !important;
+    }
+}
+
+/* ====================
+   SMALL PHONES (< 480px)
+   ==================== */
+
+@media (max-width: 480px) {
+    
+    body {
+        font-size: 13px;
+    }
+    
+    h1 {
+        font-size: 24px !important;
+    }
+    
+    h2 {
+        font-size: 20px !important;
+    }
+    
+    h3 {
+        font-size: 18px !important;
+    }
+    
+    .container {
+        width: 95%;
+        padding: 0 10px;
+    }
+    
+    section {
+        padding: 40px 0 !important;
+    }
+    
+    .hero h1 {
+        font-size: 26px !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 14px !important;
+    }
+    
+    .btn {
+        padding: 10px 15px !important;
+        font-size: 13px !important;
+    }
+    
+    .project-card,
+    .skill-category,
+    .stat-card {
+        padding: 15px !important;
+    }
+}
+
+/* ====================
+   LANDSCAPE PHONES
+   ==================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+    
+    .hero {
+        padding: 40px 0 !important;
+    }
+    
+    .hero h1 {
+        font-size: 28px !important;
+    }
+    
+    section {
+        padding: 50px 0 !important;
+    }
+}
+
+/* ====================
+   LARGE SCREENS (> 1440px)
+   ==================== */
+
+@media (min-width: 1441px) {
+    
+    .container {
+        max-width: 1400px;
+    }
+    
+    h1 {
+        font-size: 56px !important;
+    }
+    
+    h2 {
+        font-size: 42px !important;
+    }
+    
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+/* ====================
+   TOUCH DEVICE OPTIMIZATIONS
+   ==================== */
+
+@media (hover: none) and (pointer: coarse) {
+    
+    /* Larger touch targets */
+    a, button, input, textarea {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .btn {
+        padding: 15px 25px !important;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .project-card:hover,
+    .skill-item:hover,
+    .btn:hover {
+        transform: none !important;
+    }
+}
+
+/* ====================
+   PRINT STYLES
+   ==================== */
+
+@media print {
+    
+    nav,
+    .hero-buttons,
+    .contact-form,
+    footer,
+    .social-links {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    section {
+        page-break-inside: avoid;
+    }
+}
+
+/* ====================
+   ACCESSIBILITY - HIGH CONTRAST MODE
+   ==================== */
+
+@media (prefers-contrast: high) {
+    
+    :root {
+        --primary: #0066cc;
+        --text: #000000;
+        --bg-light: #ffffff;
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* ====================
+   DARK MODE SUPPORT (Optional)
+   ==================== */
+
+@media (prefers-color-scheme: dark) {
+    
+    :root {
+        --dark: #ffffff;
+        --light: #1a1f35;
+        --text: #e0e0e0;
+        --bg-light: #1a1f35;
+        --bg-card: #2d3748;
+        --border: #4a5568;
+    }
+    
+    body {
+        background-color: var(--bg-light);
+        color: var(--text);
+    }
+}
+
+/* ====================
+   UTILITY CLASSES
+   ==================== */
+
+/* Show/Hide on Mobile */
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-only {
+        display: block;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+}
+
+/* Responsive Images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive Videos */
+video,
+iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Flexible Containers */
+.flex-mobile-column {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .flex-mobile-column {
+        flex-direction: column;
+    }
+}
