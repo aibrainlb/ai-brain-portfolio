@@ -2970,34 +2970,10 @@ console.log('🔗 API Base URL:', CONFIG.API_BASE_URL);
                 });
             };
 
-            // Smooth scrolling
-            const initSmoothScroll = () => {
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function(e) {
-                        const targetId = this.getAttribute('href');
-                        if (targetId === '#' || targetId === '#!') return;
-                        
-                        const targetElement = document.querySelector(targetId);
-                        if (targetElement) {
-                            e.preventDefault();
-                            const header = document.getElementById('header');
-                            const headerHeight = header ? header.offsetHeight : 0;
-                            const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                            
-                            window.scrollTo({
-                                top: targetPosition,
-                                behavior                                
-                            });
-                        }
-                    });
-                });
-            };
-
             // Initialize everything
             loadSkills();
             loadProjects();
             initMobileMenu();
-            initSmoothScroll();
             
             console.log('✅ Portfolio initialized successfully');
         });
