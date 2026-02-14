@@ -3,8 +3,8 @@ const { validationResult } = require('express-validator');
 const crypto = require('crypto');
 
 /**
- * Universal Contact Controller - MODIFIED FOR RESEND
- * Sends confirmation emails to ALL users (bypasses testing mode restriction)
+ * Universal Contact Controller
+ * Handles contact form submissions with email notifications
  */
 class ContactController {
   
@@ -34,7 +34,7 @@ class ContactController {
   }
   
   /**
-   * Submit contact form - MODIFIED TO SEND TO ALL USERS
+   * Submit contact form
    */
   static async submitContactForm(req, res) {
     try {
@@ -102,7 +102,7 @@ class ContactController {
           // Send admin notification
           emailResults.adminSent = await ContactController.sendAdminNotification(newContact, req);
           
-          // Send user confirmation - MODIFIED: Always attempt to send
+          // Send user confirmation
           console.log(`📧 Sending confirmation email to user: ${email}`);
           emailResults.userSent = await ContactController.sendUserConfirmation(newContact);
           
@@ -115,14 +115,6 @@ class ContactController {
         } catch (emailError) {
           console.error('❌ Email sending error:', emailError.message);
           emailResults.error = emailError.message;
-          
-          // If Resend gives domain error, log helpful message
-          if (emailError.message.includes('domain') || emailError.message.includes('verify')) {
-            console.log('⚠️  Note: To send to all email addresses with Resend:');
-            console.log('   1. Get a domain (e.g., aibrain.com)');
-            console.log('   2. Verify it at https://resend.com/domains');
-            console.log('   3. Update EMAIL_FROM in .env');
-          }
         }
       } else {
         console.log('ℹ️  Email notifications disabled (EMAIL_ENABLED=false)');
@@ -252,12 +244,49 @@ class ContactController {
       
     } catch (error) {
       console.error('❌ User confirmation error:', error.message);
+      return false;
+    }
+  }
+  
+  /**
+   * Send email via Gmail - FIXED TYPO
+   */
+  static async sendWithGmail(to, subject, htmlContent, textContent) {
+    try {
+      const nodemailer = require('nodemailer');
       
-      // Log specific error for Resend domain issues
-      if (error.message && error.message.includes('domain')) {
-        console.log('⚠️  Resend requires domain verification to send to all users');
-        console.log('   Currently can only send to verified emails');
-        console.log('   See RESEND_SETUP_GUIDE.md for domain verification steps');
+      // FIXED: Changed createTransporter to createTransport
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD
+        }
+      });
+      
+      const mailOptions = {
+        from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        to: to,
+        subject: subject,
+        html: htmlContent,
+        text: textContent
+      };
+      
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`✅ Email sent via Gmail: ${info.messageId}`);
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Gmail error:', error.message);
+      
+      // Provide helpful error messages
+      if (error.message.includes('Invalid login')) {
+        console.log('💡 Check EMAIL_USER and EMAIL_PASSWORD in .env');
+        console.log('   Make sure you\'re using a Gmail App Password, not regular password');
+      } else if (error.message.includes('Username and Password not accepted')) {
+        console.log('💡 Enable 2FA and generate Gmail App Password:');
+        console.log('   1. https://myaccount.google.com/security');
+        console.log('   2. https://myaccount.google.com/apppasswords');
       }
       
       return false;
@@ -277,7 +306,6 @@ class ContactController {
       }
       
       const resend = new Resend(process.env.RESEND_API_KEY);
-      
       const emailFrom = process.env.EMAIL_FROM || 'onboarding@resend.dev';
       
       const result = await resend.emails.send({
@@ -295,55 +323,17 @@ class ContactController {
     } catch (error) {
       console.error('❌ Resend error:', error.message);
       
-      // Provide helpful error messages
       if (error.message.includes('Invalid API key')) {
         console.log('💡 Check RESEND_API_KEY in .env file');
-      } else if (error.message.includes('from')) {
-        console.log('💡 Check EMAIL_FROM in .env - should be onboarding@resend.dev or verified domain');
-      } else if (error.message.includes('domain') || error.message.includes('verify')) {
+      } else if (error.message.includes('domain')) {
         console.log('💡 Resend requires domain verification to send to all email addresses');
-        console.log('   Free tier can only send to verified emails (aibrain.lb@gmail.com)');
+        console.log('   Free tier can only send to verified emails');
         console.log('   To send to everyone: verify domain at https://resend.com/domains');
       }
       
       return false;
     }
   }
-  
-  /**
-   * Send email via Gmail
-   */
-static async sendWithGmail(to, subject, htmlContent, textContent) {
-  try {
-    const nodemailer = require('nodemailer');
-    
-    // FIXED: Changed createTransporter to createTransport
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-      }
-    });
-    
-    const mailOptions = {
-      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-      to: to,
-      subject: subject,
-      html: htmlContent,
-      text: textContent
-    };
-    
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent via Gmail: ${info.messageId}`);
-    return true;
-    
-  } catch (error) {
-    console.error('❌ Gmail error:', error.message);
-    return false;
-  }
-}
-
   
   /**
    * Send email via Brevo
@@ -448,6 +438,7 @@ From: ${contact.name}
 Email: ${contact.email}
 Phone: ${contact.phone || 'Not provided'}
 Company: ${contact.company || 'Not provided'}
+Subject: ${contact.subject}
 Date: ${contact.createdAt.toLocaleString()}
 
 Message:
@@ -459,7 +450,7 @@ ID: ${contact._id}
   }
   
   /**
-   * Generate user email HTML - THANK YOU MESSAGE
+   * Generate user confirmation email HTML
    */
   static generateUserEmail(contact) {
     return `
@@ -489,7 +480,7 @@ ID: ${contact._id}
           <div class="content">
             <p style="font-size: 16px;">Hello <strong>${contact.name}</strong>,</p>
             
-            <p>Thank you so much for reaching out and trusting me with your message! I truly appreciate you taking the time to contact me through my portfolio.</p>
+            <p>Thank you so much for reaching out! I truly appreciate you taking the time to contact me through my portfolio.</p>
             
             <div class="message">
               <h3 style="margin-top: 0; color: #667eea;">📝 Your Message Summary:</h3>
@@ -520,7 +511,7 @@ ID: ${contact._id}
           
           <div class="footer">
             <p><strong>This is an automated confirmation email.</strong></p>
-            <p>For additional questions, you can reach me at: <a href="mailto:aibrain.lb@gmail.com" style="color: #667eea;">aibrain.lb@gmail.com</a></p>
+            <p>For additional questions: <a href="mailto:aibrain.lb@gmail.com" style="color: #667eea;">aibrain.lb@gmail.com</a></p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 15px 0;">
             <p style="font-size: 11px; color: #999;">
               AI Brain Portfolio © ${new Date().getFullYear()} | All Rights Reserved<br>
@@ -534,13 +525,13 @@ ID: ${contact._id}
   }
   
   /**
-   * Generate user email text - THANK YOU MESSAGE
+   * Generate user confirmation email text
    */
   static generateUserText(contact) {
     return `
 Hello ${contact.name},
 
-Thank you so much for reaching out and trusting me with your message!
+Thank you so much for reaching out!
 
 Your Message:
 "${contact.message.substring(0, 250)}..."
