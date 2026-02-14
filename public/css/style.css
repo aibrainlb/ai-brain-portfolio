@@ -350,148 +350,232 @@ section h2 {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-//* ===================================================
-   ABOUT SECTION – MINIMAL BLUE MOBILE DESIGN
+/* ===================================================
+   ABOUT SECTION – CLEAN REDESIGN (MOBILE & LAPTOP)
    =================================================== */
+
+/* ---------- Hide all decorative bubbles ---------- */
+.bg-circle,
+.brain-lobe,
+.animated-bg .bg-circles,
+.grid-pattern {
+    display: none !important;
+}
+
+/* ---------- Base styles (applies to all screens) ---------- */
+#about {
+    background: #f8fcff !important;  /* very light blue */
+    padding: 80px 20px !important;
+    position: relative;
+    overflow: hidden;
+}
+
+#about .section-title h2 {
+    color: #0a2a44 !important;
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-bottom: 15px !important;
+}
+
+#about .section-subtitle {
+    color: #2c6b9e !important;
+    font-size: 1.2rem !important;
+    text-align: center !important;
+    margin-bottom: 50px !important;
+}
+
+/* ---------- Layout: two columns on laptop, one on mobile ---------- */
+#about .about-content {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 50px !important;
+    align-items: center !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
 @media (max-width: 768px) {
-    #about {
-        background: #f0f7ff !important;  /* very light blue */
-        padding: 40px 15px !important;
-    }
-
-    #about .section-title h2 {
-        color: #0a2a44 !important;       /* dark navy */
-        font-size: 1.8rem !important;
-        text-align: center !important;
-        margin-bottom: 10px !important;
-        font-weight: 600 !important;
-    }
-
-    #about .section-subtitle {
-        color: #2c6b9e !important;       /* medium blue */
-        text-align: center !important;
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* Main content card */
     #about .about-content {
-        background: white !important;
-        border-radius: 18px !important;
-        padding: 25px 20px !important;
-        box-shadow: 0 4px 12px rgba(0, 60, 120, 0.08) !important;
-    }
-
-    #about h3 {
-        color: #0a2a44 !important;
-        font-size: 1.3rem !important;
-        margin: 0 0 15px 0 !important;
-        font-weight: 600 !important;
-        border-left: 4px solid #1e81d9 !important;
-        padding-left: 12px !important;
-    }
-
-    #about p {
-        color: #1a2c3e !important;
-        font-size: 0.95rem !important;
-        line-height: 1.6 !important;
-        margin-bottom: 20px !important;
-    }
-
-    /* Highlights list */
-    .about-highlights {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-        margin-top: 25px !important;
-    }
-
-    .highlight {
-        display: flex !important;
-        align-items: flex-start !important;
-        background: #f5faff !important;
-        border-radius: 14px !important;
-        padding: 14px 16px !important;
-        border: 1px solid #d4e4f5 !important;
-    }
-
-    .highlight i {
-        color: #1e81d9 !important;
-        font-size: 1.3rem !important;
-        min-width: 32px !important;
-        margin-right: 12px !important;
-        text-align: center !important;
-        margin-top: 2px !important;
-    }
-
-    .highlight span {
-        color: #0a2a44 !important;
-        font-size: 0.95rem !important;
-        line-height: 1.5 !important;
-        word-break: break-word !important;
-        flex: 1 !important;
-    }
-
-    /* Visual / logo area */
-    #about .about-visual {
-        display: flex !important;
-        justify-content: center !important;
-        margin: 30px 0 0 !important;
-    }
-
-    .ai-brain {
-        width: 160px !important;
-        height: auto !important;
-    }
-
-    .brain-logo {
-        width: 100% !important;
-        height: auto !important;
-        border-radius: 18px !important;
-        box-shadow: 0 6px 14px rgba(0, 70, 140, 0.15) !important;
-    }
-
-    /* Hide decorative brain lobes and extra text */
-    .brain-lobe, .ai-subtext {
-        display: none !important;
-    }
-
-    /* Optional stats boxes (if present) */
-    #about .stat-card {
-        background: white !important;
-        border-radius: 14px !important;
-        padding: 15px !important;
-        border: 1px solid #cde1f2 !important;
-        text-align: center !important;
-        margin: 10px 0 !important;
-    }
-
-    #about .stat-number {
-        color: #0a2a44 !important;
-        font-size: 1.8rem !important;
-        font-weight: 600 !important;
-    }
-
-    #about .stat-label {
-        color: #2c6b9e !important;
-        font-size: 0.9rem !important;
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
     }
 }
 
-/* Small phones */
+/* ---------- Left column: text ---------- */
+#about .about-text {
+    background: white !important;
+    padding: 40px !important;
+    border-radius: 24px !important;
+    box-shadow: 0 10px 30px rgba(0, 60, 120, 0.08) !important;
+    border: 1px solid rgba(30, 129, 217, 0.15) !important;
+}
+
+#about .about-text h3 {
+    color: #0a2a44 !important;
+    font-size: 2rem !important;
+    font-weight: 600 !important;
+    margin: 0 0 20px 0 !important;
+    border-left: 5px solid #1e81d9 !important;
+    padding-left: 20px !important;
+}
+
+#about .about-text p {
+    color: #1a2c3e !important;
+    font-size: 1.1rem !important;
+    line-height: 1.7 !important;
+    margin-bottom: 25px !important;
+}
+
+/* Highlights list */
+.about-highlights {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    margin-top: 30px !important;
+}
+
+.highlight {
+    display: flex !important;
+    align-items: center !important;
+    background: #f0f7ff !important;
+    border-radius: 16px !important;
+    padding: 16px 20px !important;
+    border: 1px solid #d0e3f5 !important;
+    transition: all 0.2s ease !important;
+}
+
+.highlight:hover {
+    transform: translateX(5px) !important;
+    background: #e1effb !important;
+    border-color: #1e81d9 !important;
+}
+
+.highlight i {
+    color: #1e81d9 !important;
+    font-size: 1.5rem !important;
+    min-width: 40px !important;
+    margin-right: 15px !important;
+    text-align: center !important;
+}
+
+.highlight span {
+    color: #0a2a44 !important;
+    font-size: 1.1rem !important;
+    line-height: 1.5 !important;
+    word-break: break-word !important;
+    flex: 1 !important;
+}
+
+/* ---------- Right column: visual / logo ---------- */
+#about .about-visual {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.ai-brain {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 350px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+.brain-logo {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 24px !important;
+    box-shadow: 0 15px 40px rgba(0, 70, 140, 0.2) !important;
+    border: 3px solid white !important;
+    transition: transform 0.3s ease !important;
+}
+
+.brain-logo:hover {
+    transform: scale(1.02) !important;
+}
+
+.ai-text {
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #0a2a44 !important;
+    margin-top: 15px !important;
+    text-align: center !important;
+}
+
+.ai-subtext {
+    color: #2c6b9e !important;
+    font-size: 1rem !important;
+    text-align: center !important;
+}
+
+/* ---------- Mobile tweaks ---------- */
+@media (max-width: 768px) {
+    #about {
+        padding: 50px 15px !important;
+    }
+
+    #about .section-title h2 {
+        font-size: 2rem !important;
+    }
+
+    #about .section-subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 30px !important;
+    }
+
+    #about .about-text {
+        padding: 25px 20px !important;
+    }
+
+    #about .about-text h3 {
+        font-size: 1.5rem !important;
+        padding-left: 15px !important;
+    }
+
+    #about .about-text p {
+        font-size: 1rem !important;
+    }
+
+    .highlight {
+        padding: 12px 16px !important;
+    }
+
+    .highlight i {
+        font-size: 1.3rem !important;
+        min-width: 30px !important;
+        margin-right: 10px !important;
+    }
+
+    .highlight span {
+        font-size: 1rem !important;
+    }
+
+    .ai-brain {
+        max-width: 250px !important;
+    }
+
+    .ai-text {
+        font-size: 1.2rem !important;
+    }
+}
+
+/* Very small phones */
 @media (max-width: 480px) {
-    #about .about-content {
+    #about .about-text {
         padding: 20px 15px !important;
     }
     .highlight {
-        padding: 12px 14px !important;
+        padding: 10px 12px !important;
     }
     .highlight i {
         font-size: 1.2rem !important;
-        min-width: 28px !important;
+        min-width: 25px !important;
     }
     .highlight span {
-        font-size: 0.9rem !important;
+        font-size: 0.95rem !important;
     }
 }
 /* ================================================
