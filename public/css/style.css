@@ -351,206 +351,156 @@ section h2 {
     background-clip: text;
 }
 /* ===================================================
-   ABOUT SECTION - COMPACT MOBILE VERSION
+   ABOUT SECTION – CLEAN BLUE MOBILE DESIGN
    =================================================== */
 @media (max-width: 768px) {
-    /* About container – less padding, white background for readability */
-    #about,
-    section#about {
+    #about {
+        background: #e6f2ff !important;  /* very light blue background */
         padding: 40px 15px !important;
-        background: #ffffff !important;
     }
 
-    #about .about-container,
-    #about .about-content,
-    #about .about-text {
-        padding: 20px 10px !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-
-    /* Main heading – smaller, centered */
-    #about h2,
-    section#about h2 {
+    /* Section title */
+    #about .section-title h2 {
+        color: #004080 !important;       /* dark blue for contrast */
         font-size: 1.8rem !important;
         margin-bottom: 20px !important;
-        color: #2196F3 !important;
-    }
-
-    /* Subheadings – compact, left-aligned */
-    #about h3,
-    section#about h3,
-    #about .about-text h3 {
-        font-size: 1.2rem !important;
-        margin: 15px 0 10px 0 !important;
-        padding: 8px 12px !important;
-        border-left: 3px solid #2196F3 !important;
-        background: rgba(33, 150, 243, 0.05) !important;
-    }
-
-    /* Paragraphs – smaller, tighter line-height */
-    #about p,
-    section#about p,
-    #about .about-text p,
-    .about-content p {
-        font-size: 0.9rem !important;
-        line-height: 1.5 !important;
-        margin-bottom: 12px !important;
-        color: #2c3e50 !important;
-    }
-
-    /* Lists – compact */
-    #about ul,
-    #about ol,
-    .about-content ul,
-    .about-content ol {
-        padding-left: 20px !important;
-        margin: 10px 0 !important;
-    }
-
-    #about ul li,
-    .about-content ul li {
-        font-size: 0.9rem !important;
-        line-height: 1.5 !important;
-        margin-bottom: 8px !important;
-        padding-left: 25px !important;
-    }
-
-    /* Custom bullet icons – smaller */
-    #about ul li::before,
-    .about-content ul li::before {
-        font-size: 0.9rem !important;
-    }
-
-    /* Highlights & strong text – smaller background */
-    #about .highlight,
-    #about .highlight span,
-    #about strong,
-    #about b {
-        font-size: 0.9rem !important;
-        padding: 2px 5px !important;
-        background: rgba(33, 150, 243, 0.1) !important;
-    }
-
-    /* Icons – consistent size */
-    #about i,
-    #about .fa,
-    #about .fas,
-    #about .far,
-    #about .fab,
-    .about-content i {
-        font-size: 1.1rem !important;
-        margin-right: 6px !important;
-    }
-
-    /* Info boxes – compact */
-    #about .info-box,
-    #about .box,
-    #about .highlight-box,
-    .about-content .info-box {
-        padding: 12px 15px !important;
-        margin: 12px 0 !important;
-        border-left-width: 3px !important;
-    }
-
-    #about .info-box i,
-    #about .box i {
-        font-size: 1.4rem !important;
-        margin-right: 10px !important;
-    }
-
-    #about .info-box p,
-    #about .box p {
-        font-size: 0.9rem !important;
-        margin: 0 !important;
-    }
-
-    /* Quote blocks */
-    #about blockquote,
-    #about .quote {
-        padding: 12px 15px !important;
-        margin: 15px 0 !important;
-    }
-
-    #about blockquote p,
-    #about .quote p {
-        font-size: 0.9rem !important;
-    }
-
-    /* Tags / badges */
-    #about .tag,
-    #about .badge,
-    #about .skill-tag {
-        padding: 5px 12px !important;
-        margin: 5px 5px 5px 0 !important;
-        font-size: 0.8rem !important;
-    }
-
-    /* ===== SMALL PART AT THE END (AI subtext & bottom elements) ===== */
-    /* The .ai-subtext under the brain logo */
-    #about .ai-subtext,
-    .about-visual .ai-subtext {
-        font-size: 0.8rem !important;
-        bottom: -60px !important; /* adjust position if needed */
-        white-space: normal !important;
         text-align: center !important;
-        width: 100% !important;
-        color: #666 !important;
     }
 
-    /* If you have stats boxes at the end, make them smaller */
-    #about .stats-grid,
-    #about .stat-container,
-    #about .stats-container {
+    #about .section-subtitle {
+        color: #0066cc !important;
+        font-size: 1rem !important;
+        text-align: center !important;
+    }
+
+    /* About text */
+    #about .about-text {
+        background: white !important;
+        padding: 25px 20px !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 12px rgba(0, 64, 128, 0.1) !important;
+        margin-bottom: 20px !important;
+    }
+
+    #about .about-text h3 {
+        color: #004080 !important;
+        font-size: 1.3rem !important;
+        margin: 0 0 15px 0 !important;
+        border-left: 4px solid #2196F3 !important;
+        padding-left: 12px !important;
+    }
+
+    #about .about-text p {
+        color: #1a1a1a !important;
+        font-size: 0.95rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 15px !important;
+    }
+
+    /* Highlight boxes – blue theme */
+    .about-highlights {
+        display: flex !important;
+        flex-direction: column !important;
         gap: 10px !important;
-        margin-top: 20px !important;
+        margin-top: 25px !important;
     }
 
+    .highlight {
+        display: flex !important;
+        align-items: center !important;
+        background: white !important;
+        border-left: 4px solid #2196F3 !important;
+        padding: 14px 18px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 8px rgba(0, 102, 204, 0.08) !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .highlight:hover {
+        transform: translateX(5px) !important;
+        box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15) !important;
+    }
+
+    .highlight i {
+        color: #2196F3 !important;
+        font-size: 1.4rem !important;
+        margin-right: 15px !important;
+        min-width: 30px !important;
+        text-align: center !important;
+    }
+
+    .highlight span {
+        color: #003366 !important;
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+        word-break: break-word !important;
+        flex: 1 !important;
+    }
+
+    /* Brain visual – simplified */
+    #about .about-visual {
+        margin: 30px 0 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    #about .ai-brain {
+        position: relative !important;
+        width: 200px !important;
+        height: auto !important;
+    }
+
+    #about .brain-logo {
+        width: 160px !important;
+        height: auto !important;
+        border-radius: 20px !important;
+        box-shadow: 0 6px 16px rgba(0, 102, 204, 0.2) !important;
+    }
+
+    /* Hide extra decorative elements */
+    .brain-lobe, .ai-subtext {
+        display: none !important;
+    }
+
+    /* Stats boxes if present – blue theme */
     #about .stat-card,
     #about .stat-box {
-        padding: 15px 10px !important;
+        background: white !important;
+        border: 1px solid #cce0f0 !important;
+        border-radius: 12px !important;
+        padding: 15px !important;
+        text-align: center !important;
     }
 
-    #about .stat-number,
-    #about .stat-card h3,
-    #about .stat-box h3 {
-        font-size: 1.8rem !important;
+    #about .stat-number {
+        color: #004080 !important;
+        font-size: 2rem !important;
+        font-weight: 700 !important;
     }
 
-    #about .stat-label,
-    #about .stat-card p,
-    #about .stat-box p {
-        font-size: 0.8rem !important;
-    }
-
-    /* Ensure bottom of about section has proper spacing */
-    #about .about-content:last-child,
-    #about .about-text:last-child {
-        margin-bottom: 0 !important;
-        padding-bottom: 10px !important;
+    #about .stat-label {
+        color: #0066cc !important;
+        font-size: 0.9rem !important;
     }
 }
 
-/* Extra small phones (≤480px) – even more compact */
+/* Extra small screens (≤480px) */
 @media (max-width: 480px) {
-    #about h2 {
-        font-size: 1.6rem !important;
+    #about .about-text {
+        padding: 20px 15px !important;
     }
 
-    #about h3 {
-        font-size: 1.1rem !important;
+    .highlight {
+        padding: 12px 15px !important;
     }
 
-    #about p,
-    #about li,
-    #about .highlight,
-    #about strong {
-        font-size: 0.85rem !important;
+    .highlight i {
+        font-size: 1.2rem !important;
+        margin-right: 12px !important;
     }
 
-    #about .ai-subtext {
-        font-size: 0.7rem !important;
-        bottom: -50px !important;
+    .highlight span {
+        font-size: 0.9rem !important;
     }
 }
 
