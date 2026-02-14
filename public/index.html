@@ -13,12 +13,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/jpeg" href="/images/logo.jpg">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mobile-fix-addon.css">
-    <link rel="stylesheet" href="about-section-redesign.css">
-    <!-- <link rel="stylesheet" href="style.css"> -->
-    <link rel="stylesheet" href="mobile-fix-addon.css">
+    <link rel="icon" type="image/jpeg" href="./logo.jpg">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./mobile-fix-addon.css">
+    <link rel="stylesheet" href="./about-section-redesign.css">
     <style>
 :root {
     /* Enhanced Color Scheme */
@@ -2026,7 +2024,7 @@ footer::before {
     <header id="header">
         <div class="container header-container">
             <div class="logo">
-                <img src="/images/logo.jpg" alt="AI Brain Logo" class="logo-img">
+                <img src="./logo.jpg" alt="AI Brain Logo" class="logo-img">
                 <div class="logo-text">AI Brain</div>
             </div>
             
@@ -2075,13 +2073,15 @@ footer::before {
 
     <!-- About Section -->
     <section id="about">
-        <div class="animated-bg">
-            <div class="bg-circles">
-                <div class="bg-circle"></div>
-                <div class="bg-circle"></div>
-                <div class="bg-circle"></div>
-            </div>
+        <!-- Beautiful Transparent Bubbles Background -->
+        <div class="about-bubbles">
+            <div class="bubble bubble-1"></div>
+            <div class="bubble bubble-2"></div>
+            <div class="bubble bubble-3"></div>
+            <div class="bubble bubble-4"></div>
+            <div class="bubble bubble-5"></div>
         </div>
+        
         <div class="container">
             <div class="section-title">
                 <h2>About AI Brain</h2>
@@ -2090,56 +2090,82 @@ footer::before {
             
             <div class="about-content">
                 <div class="about-text">
-                    <h3>Computer Science & AI Excellence</h3>
-                    <p>
-                        <strong>AI Brain</strong> represents cutting-edge expertise in <strong>Computer Science and Artificial Intelligence</strong>. 
-                        Specializing in designing and implementing intelligent systems, building scalable database 
-                        architectures, and developing robust backend solutions that power modern applications.
-                    </p>
-                    <p>
-                        With advanced proficiency in <strong>Node.js</strong>, creating powerful backend systems that drive 
-                        innovation. Extensive experience in developing HTML-based projects and implementing 
-                        AI solutions that solve complex real-world challenges with precision and efficiency.
-                    </p>
-                    <p>
-                        Beyond traditional coding, working as a <strong>Blender designer</strong>, crafting high-quality 3D assets 
-                        for games and interactive experiences. This unique fusion of AI development, backend 
-                        engineering, and 3D design enables approaching projects from multiple creative and technical dimensions.
-                    </p>
-                    
-                    <div class="about-highlights">
-                        <div class="highlight">
-                            <i class="fas fa-brain"></i>
-                            <span>Computer Science & AI Systems Expertise</span>
-                        </div>
-                        <div class="highlight">
-                            <i class="fas fa-database"></i>
-                            <span>Advanced Database Design & Management</span>
-                        </div>
-                        <div class="highlight">
-                            <i class="fas fa-server"></i>
-                            <span>Backend Development with Node.js</span>
-                        </div>
-                        <div class="highlight">
-                            <i class="fas fa-cube"></i>
-                            <span>3D Asset Creation with Blender</span>
-                        </div>
-                        <div class="highlight">
-                            <i class="fas fa-gamepad"></i>
-                            <span>Game Development & Interactive Experiences</span>
+                    <div class="about-text-inner">
+                        <h3>Computer Science & AI Excellence</h3>
+                        <p>
+                            <strong>AI Brain</strong> represents cutting-edge expertise in <strong>Computer Science and Artificial Intelligence</strong>. 
+                            Specializing in designing and implementing intelligent systems, building scalable database 
+                            architectures, and developing robust backend solutions that power modern applications.
+                        </p>
+                        <p>
+                            With advanced proficiency in <strong>Node.js</strong>, creating powerful backend systems that drive 
+                            innovation. Extensive experience in developing HTML-based projects and implementing 
+                            AI solutions that solve complex real-world challenges with precision and efficiency.
+                        </p>
+                        <p>
+                            Beyond traditional coding, working as a <strong>Blender designer</strong>, crafting high-quality 3D assets 
+                            for games and interactive experiences. This unique fusion of AI development, backend 
+                            engineering, and 3D design enables approaching projects from multiple creative and technical dimensions.
+                        </p>
+                        
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h4>AI Systems</h4>
+                                    <p>Expert Level</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h4>Database Design</h4>
+                                    <p>Advanced</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h4>Backend Dev</h4>
+                                    <p>Node.js Pro</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h4>3D Design</h4>
+                                    <p>Blender Expert</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="about-visual">
-                    <div class="ai-brain">
-                        <img src="/images/logo.jpg" alt="AI Brain" class="brain-logo">
-                        <div class="brain-lobe lobe-1"></div>
-                        <div class="brain-lobe lobe-2"></div>
-                        <div class="brain-lobe lobe-3"></div>
-                        <div class="brain-lobe lobe-4"></div>
-                        <div class="ai-text">CS & AI</div>
-                        <div class="ai-subtext">Innovation & Intelligence</div>
+                    <div class="ai-brain-new">
+                        <div class="brain-glow"></div>
+                        <img src="./logo.jpg" alt="AI Brain" class="brain-logo-new">
+                        <div class="orbit-ring ring-1"></div>
+                        <div class="orbit-ring ring-2"></div>
+                        <div class="orbit-ring ring-3"></div>
+                        <div class="floating-particles">
+                            <span class="particle"></span>
+                            <span class="particle"></span>
+                            <span class="particle"></span>
+                            <span class="particle"></span>
+                            <span class="particle"></span>
+                            <span class="particle"></span>
+                        </div>
+                        <div class="ai-text-new">CS & AI</div>
+                        <div class="ai-subtext-new">Innovation & Intelligence</div>
                     </div>
                 </div>
             </div>
@@ -2298,7 +2324,7 @@ footer::before {
                 <div class="contact-details">
                     <div class="contact-detail">
                         <i class="fas fa-envelope"></i>
-                        <span><a href="mailto:aibrain.lb@gmail.com">aibrain.lb@gmail.com</a></span>
+                        <span><a href="/cdn-cgi/l/email-protection#2b4a4249594a42450547496b4c464a424705484446"><span class="__cf_email__" data-cfemail="f3929a9181929a9ddd9f91b3949e929a9fdd909c9e">[email&#160;protected]</span></a></span>
                     </div>
                     <div class="contact-detail">
                         <i class="fas fa-map-marker-alt"></i>
@@ -2357,7 +2383,7 @@ footer::before {
 <!-- CONTACT FORM SCRIPT - Ultra Compact & Professional -->
 <!-- ============================================ -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const CONFIG = {
     API_BASE_URL: (() => {
         if (window.location.hostname === 'localhost' || 
@@ -2670,7 +2696,7 @@ console.log('🔗 API Base URL:', CONFIG.API_BASE_URL);
             <div class="footer-content">
                 <div class="footer-logo">
                     <div class="logo">
-                        <img src="/images/logo.jpg" alt="AI Brain Logo" class="logo-img">
+                        <img src="./logo.jpg" alt="AI Brain Logo" class="logo-img">
                         <div class="logo-text">AI Brain</div>
                     </div>
                     <p class="footer-tagline">Building intelligent CS & AI systems and immersive experiences</p>
@@ -2695,7 +2721,7 @@ console.log('🔗 API Base URL:', CONFIG.API_BASE_URL);
                 
                 <div class="footer-contact">
                     <h4>Contact Info</h4>
-                    <p><i class="fas fa-envelope"></i> <a class="__cf_email__" data-cfemail="6c0d050e1e0d050242000e2c0b010d0500420f0301">aibrain.lb@gmail.com</a></p>
+                    <p><i class="fas fa-envelope"></i> <a class="__cf_email__" data-cfemail="6c0d050e1e0d050242000e2c0b010d0500420f0301"><span class="__cf_email__" data-cfemail="b1d0d8d3c3d0d8df9fddd3f1d6dcd0d8dd9fd2dedc">[email&#160;protected]</span></a></p>
                     <div class="footer-social">
                         <a href="https://github.com/aibrainlb" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-github"></i>
@@ -2716,7 +2742,7 @@ console.log('🔗 API Base URL:', CONFIG.API_BASE_URL);
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Static data embedded directly in HTML for standalone use
         const STATIC_SKILLS = [
             { name: "Blender", category: "3D Design", level: 90, icon: "fas fa-cube" },
@@ -2960,21 +2986,22 @@ console.log('🔗 API Base URL:', CONFIG.API_BASE_URL);
                             
                             window.scrollTo({
                                 top: targetPosition,
-                                behavior: 'smooth'
+                                behavior                                
                             });
                         }
                     });
                 });
             };
 
-            // Initialize
-            console.log('🚀 Initializing AI Brain Portfolio...');
+            // Initialize everything
             loadSkills();
             loadProjects();
             initMobileMenu();
             initSmoothScroll();
+            
             console.log('✅ Portfolio initialized successfully');
         });
     </script>
+    <script src="./main.js"></script>
 </body>
 </html>
