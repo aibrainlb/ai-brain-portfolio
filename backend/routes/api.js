@@ -1,159 +1,165 @@
 const express = require('express');
-const router = express.Router();
-const { body } = require('express-validator');
-const ContactController = require('../controllers/contactController');
-const Project = require('../models/Project');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
-/**
- * Validation middleware for contact form
- */
-const contactValidation = [
-  body('name').trim().notEmpty().withMessage('Name is required').escape(),
-  body('email').trim().isEmail().withMessage('Valid email is required').normalizeEmail(),
-  body('message').trim().notEmpty().withMessage('Message is required').escape(),
-  body('phone').optional({ checkFalsy: true }).trim().escape(),
-  body('company').optional({ checkFalsy: true }).trim().escape(),
-  body('subject').optional({ checkFalsy: true }).trim().escape()
-];
+const app = express();
 
-/**
- * PUBLIC: Submit contact form - NOW WITH EMAIL SUPPORT
- */
-router.post('/contact', contactValidation, ContactController.submitContactForm);
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-/**
- * PUBLIC: Get all projects
- */
-router.get('/projects', async (req, res) => {
+// MongoDB connection
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) {
+    return;
+  }
+  
   try {
-    const projects = await Project.find({ status: 'active' })
-      .sort({ displayOrder: 1, createdAt: -1 })
-      .limit(20);
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log('✅ MongoDB connected');
+  } catch (err) {
+    console.error('❌ MongoDB error:', err.message);
+  }
+};
+
+// Contact Schema
+const contactSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  subject: { type: String, default: 'Portfolio Inquiry' },
+  message: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  ipAddress: String,
+  userAgent: String
+});
+
+const Contact = mongoose.models.Contact || mongoose.model('Contact', contactSchema);
+
+// Email transporter
+let transporter = null;
+if (process.env.EMAIL_ENABLED === 'true') {
+  transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE || 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD
+    }
+  });
+}
+
+// Routes
+app.get('/api', (req, res) => {
+  res.json({
+    success: true,
+    message: 'AI Brain Portfolio API',
+    version: '3.0.0',
+    endpoints: [
+      'GET /api/health',
+      'POST /api/contact'
+    ]
+  });
+});
+
+app.get('/api/health', async (req, res) => {
+  await connectDB();
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    mongodb: isConnected ? 'connected' : 'disconnected',
+    email: process.env.EMAIL_ENABLED === 'true' ? 'enabled' : 'disabled'
+  });
+});
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    await connectDB();
     
-    // If no projects in DB, return default ones
-    if (!projects || projects.length === 0) {
-      return res.json({
-        success: true,
-        count: 1,
-        data: [
-          {
-            id: 1,
-            title: "Kheir W Barke",
-            description: "AI-powered supermarket management system with intelligent automation and GPS tracking.",
-            technologies: ["AI/ML", "Node.js", "Python", "React", "MongoDB"],
-            features: ["AI inventory management", "GPS tracking", "Automated checkout"],
-            startDate: "2025-09-01",
-            endDate: "Present",
-            status: "active",
-            githubUrl: "https://github.com/andyters/kheir-w-barke",
-            liveUrl: "#",
-            imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-            featured: true,
-            views: 1250
-          }
-        ]
+    const { name, email, subject, message } = req.body;
+    
+    // Validation
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide name, email, and message'
       });
+    }
+    
+    // Save to database
+    const contact = new Contact({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      subject: subject || 'Portfolio Inquiry',
+      message: message.trim(),
+      ipAddress: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+      userAgent: req.get('user-agent')
+    });
+    
+    await contact.save();
+    console.log(`✅ Contact saved: ${contact._id}`);
+    
+    // Send email notification
+    let emailSent = false;
+    if (transporter && process.env.EMAIL_ENABLED === 'true') {
+      try {
+        const mailOptions = {
+          from: process.env.EMAIL_FROM,
+          to: process.env.ADMIN_EMAIL,
+          subject: `📬 New Contact: ${name} - ${subject || 'Portfolio Inquiry'}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>From:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${subject || 'Portfolio Inquiry'}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message}</p>
+            <hr>
+            <p><small>ID: ${contact._id}</small></p>
+          `
+        };
+        
+        await transporter.sendMail(mailOptions);
+        emailSent = true;
+        console.log('✅ Email sent');
+      } catch (emailError) {
+        console.error('❌ Email error:', emailError.message);
+      }
     }
     
     res.json({
       success: true,
-      count: projects.length,
-      data: projects
+      message: 'Thank you for reaching out! I will get back to you soon.',
+      data: {
+        id: contact._id,
+        emailSent: emailSent
+      }
     });
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    // Fallback static data
-    res.json({
-      success: true,
-      count: 1,
-      data: [
-        {
-          id: 1,
-          title: "Kheir W Barke",
-          description: "AI-powered supermarket management system with intelligent automation and GPS tracking.",
-          technologies: ["AI/ML", "Node.js", "Python", "React", "MongoDB"],
-          features: ["AI inventory management", "GPS tracking", "Automated checkout"],
-          startDate: "2025-09-01",
-          endDate: "Present",
-          status: "active",
-          githubUrl: "https://github.com/andyters/kheir-w-barke",
-          liveUrl: "#",
-          imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-          featured: true,
-          views: 1250
-        }
-      ]
-    });
-  }
-});
-
-/**
- * PUBLIC: Get all skills
- */
-router.get('/skills', async (req, res) => {
-  const skills = [
-    { name: "Blender", category: "3D Design", level: 90, icon: "fas fa-cube" },
-    { name: "Godot", category: "Game Development", level: 85, icon: "fas fa-gamepad" },
-    { name: "Unity", category: "Game Development", level: 80, icon: "fab fa-unity" },
-    { name: "C#", category: "Programming", level: 88, icon: "fas fa-code" },
-    { name: "Python", category: "Programming", level: 92, icon: "fab fa-python" },
-    { name: "JavaScript", category: "Programming", level: 90, icon: "fab fa-js" },
-    { name: "HTML/CSS", category: "Frontend", level: 95, icon: "fab fa-html5" },
-    { name: "Node.js", category: "Backend", level: 90, icon: "fab fa-node-js" },
-    { name: "Express.js", category: "Backend", level: 88, icon: "fas fa-server" },
-    { name: "AI/ML", category: "CS & AI", level: 87, icon: "fas fa-brain" },
-    { name: "Database Design", category: "Database", level: 89, icon: "fas fa-database" },
-    { name: "MongoDB", category: "Database", level: 88, icon: "fas fa-leaf" }
-  ];
-  
-  res.json({ 
-    success: true, 
-    count: skills.length, 
-    data: skills 
-  });
-});
-
-/**
- * PUBLIC: Health check
- */
-router.get('/health', (req, res) => {
-  res.json({
-    success: true,
-    message: 'API is healthy',
-    timestamp: new Date().toISOString(),
-    emailEnabled: process.env.EMAIL_ENABLED === 'true'
-  });
-});
-
-/**
- * PUBLIC: Get statistics
- */
-router.get('/stats', async (req, res) => {
-  try {
-    const Contact = require('../models/Contact');
-    const projectCount = await Project.countDocuments({ status: 'active' });
-    const contactCount = await Contact.countDocuments();
     
-    res.json({
-      success: true,
-      data: {
-        projects: projectCount || 4,
-        contacts: contactCount || 0,
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString()
-      }
-    });
   } catch (error) {
-    res.json({
-      success: true,
-      data: {
-        projects: 4,
-        contacts: 0,
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString()
-      }
+    console.error('❌ Contact error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send message. Please try again.'
     });
   }
 });
 
-module.exports = router;
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Endpoint not found',
+    path: req.path
+  });
+});
+
+// Export for Vercel
+module.exports = app;
