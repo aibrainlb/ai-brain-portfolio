@@ -1,324 +1,335 @@
-// Enhanced Mobile-Responsive Portfolio JavaScript
-// AI Brain Portfolio - Mobile Optimized (Navbar Scrolls Normally)
+// Add this at the very beginning for SSL issues
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
+const path = require('path');
+require('dotenv').config();
 
-(function() {
-    'use strict';
+// Database
+const connectDB = require('./config/database');
 
-    // ================================================
-    // MOBILE MENU FUNCTIONALITY
-    // ================================================
-    const initMobileMenu = () => {
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-        const body = document.body;
-        let menuOverlay = document.querySelector('.mobile-menu-overlay');
+// Routes
+const apiRoutes = require('./routes/api');
 
-        if (!menuOverlay) {
-            menuOverlay = document.createElement('div');
-            menuOverlay.className = 'mobile-menu-overlay';
-            menuOverlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 998;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-            `;
-            body.appendChild(menuOverlay);
-        }
+// Initialize app
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-        if (!mobileMenuBtn || !navLinks) return;
+// Connect to database
+connectDB.connect().then(() => {
+  console.log('✅ Database connection initialized');
+}).catch((err) => {
+  console.error('⚠️  Database connection failed:', err.message);
+  console.log('ℹ️  Continuing without database...');
+});
 
-        const toggleMenu = (forceClose = false) => {
-            const isActive = forceClose ? false : navLinks.classList.toggle('active');
-            mobileMenuBtn.innerHTML = isActive ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-            menuOverlay.style.opacity = isActive ? '1' : '0';
-            menuOverlay.style.visibility = isActive ? 'visible' : 'hidden';
-            body.classList.toggle('menu-open', isActive);
-            mobileMenuBtn.setAttribute('aria-expanded', isActive);
-            navLinks.setAttribute('aria-hidden', !isActive);
-        };
+/**
+ * Security Middleware
+ */
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
+      imgSrc: ["'self'", "data:", "https:", "http:", "blob:"],
+      connectSrc: ["'self'", "http://localhost:3000", "ws://localhost:3000"],
+      frameSrc: ["'none'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      workerSrc: ["'self'", "blob:"]
+    }
+  },
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
-        mobileMenuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleMenu();
-        });
+/**
+ * CORS Configuration
+ */
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:5173'
+    ];
 
-        menuOverlay.addEventListener('click', () => toggleMenu(true));
+console.log('\n🌐 CORS Configuration:');
+console.log('   Environment:', process.env.NODE_ENV || 'development');
+console.log('   Allowed Origins:', allowedOrigins);
 
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => toggleMenu(true));
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
-                toggleMenu(true);
-            }
-        });
-
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
-                    toggleMenu(true);
-                }
-            }, 250);
-        });
-
-        navLinks.addEventListener('click', (e) => e.stopPropagation());
-    };
-
-    // ================================================
-    // HEADER SCROLL BEHAVIOR (adds 'scrolled' class)
-    // ================================================
-    const initHeaderScroll = () => {
-        const header = document.getElementById('header');
-        if (!header) return;
-
-        let ticking = false;
-        const updateHeader = () => {
-            const currentScroll = window.pageYOffset;
-            header.classList.toggle('scrolled', currentScroll > 50);
-            ticking = false;
-        };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(updateHeader);
-                ticking = true;
-            }
-        });
-    };
-
-    // ================================================
-    // SMOOTH SCROLLING WITH OFFSET
-    // ================================================
-    const initSmoothScroll = () => {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#' || targetId === '#!') return;
-
-                const targetElement = document.querySelector(targetId);
-                if (!targetElement) return;
-
-                e.preventDefault();
-
-                const header = document.getElementById('header');
-                const headerHeight = header ? header.offsetHeight : 0;
-                const targetPosition = targetElement.offsetTop - headerHeight - 20;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-
-                document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    };
-
-    // ================================================
-    // FIX ANCHOR LINKS ON PAGE LOAD
-    // ================================================
-    const fixAnchorOnLoad = () => {
-        if (window.location.hash) {
-            setTimeout(() => {
-                const target = document.querySelector(window.location.hash);
-                if (target) {
-                    const header = document.getElementById('header');
-                    const headerHeight = header ? header.offsetHeight : 0;
-                    const targetPosition = target.offsetTop - headerHeight - 20;
-                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                }
-            }, 100);
-        }
-    };
-
-    // ================================================
-    // ACTIVE SECTION HIGHLIGHTING
-    // ================================================
-    const initActiveSection = () => {
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-        if (sections.length === 0 || navLinks.length === 0) return;
-
-        let ticking = false;
-        const highlightActiveSection = () => {
-            const scrollPosition = window.pageYOffset + 150;
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${sectionId}`) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-            ticking = false;
-        };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(highlightActiveSection);
-                ticking = true;
-            }
-        });
-        highlightActiveSection();
-    };
-
-    // ================================================
-    // INTERSECTION OBSERVER FOR ANIMATIONS
-    // ================================================
-    const initScrollAnimations = () => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible', 'fade-in-up');
-                    if (entry.target.classList.contains('skill-card')) {
-                        const bar = entry.target.querySelector('.skill-level-bar');
-                        if (bar && bar.dataset.width) {
-                            setTimeout(() => { bar.style.width = bar.dataset.width; }, 300);
-                        }
-                    }
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-        document.querySelectorAll('.skill-card, .project-card, .stat-card, .contact-info-card')
-            .forEach(el => observer.observe(el));
-    };
-
-    // ================================================
-    // TOUCH DEVICE DETECTION
-    // ================================================
-    const detectTouchDevice = () => {
-        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-        if (isTouchDevice) document.body.classList.add('touch-device');
-        return isTouchDevice;
-    };
-
-    // ================================================
-    // PREVENT ZOOM ON DOUBLE TAP (iOS)
-    // ================================================
-    const preventDoubleTapZoom = () => {
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', (e) => {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) e.preventDefault();
-            lastTouchEnd = now;
-        }, { passive: false });
-    };
-
-    // ================================================
-    // VIEWPORT HEIGHT FIX FOR MOBILE
-    // ================================================
-    const fixMobileViewportHeight = () => {
-        const setVH = () => {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        };
-        setVH();
-        window.addEventListener('resize', () => {
-            clearTimeout(window.vhTimer);
-            window.vhTimer = setTimeout(setVH, 250);
-        });
-    };
-
-    // ================================================
-    // BACK TO TOP BUTTON
-    // ================================================
-    const initBackToTop = () => {
-        let backToTopBtn = document.querySelector('.back-to-top');
-        if (!backToTopBtn) {
-            backToTopBtn = document.createElement('button');
-            backToTopBtn.className = 'back-to-top';
-            backToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-            backToTopBtn.setAttribute('aria-label', 'Back to top');
-            backToTopBtn.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                width: 50px;
-                height: 50px;
-                background: var(--primary, #2196F3);
-                color: white;
-                border: none;
-                border-radius: 50%;
-                cursor: pointer;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                z-index: 999;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            `;
-            document.body.appendChild(backToTopBtn);
-        }
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopBtn.style.opacity = '1';
-                backToTopBtn.style.visibility = 'visible';
-            } else {
-                backToTopBtn.style.opacity = '0';
-                backToTopBtn.style.visibility = 'hidden';
-            }
-        });
-
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    };
-
-    // ================================================
-    // INITIALIZE ALL FEATURES
-    // ================================================
-    const init = () => {
-        console.log('🎨 AI Brain Portfolio - Mobile Enhanced Version');
-
-        const isTouchDevice = detectTouchDevice();
-        console.log('📱 Touch Device:', isTouchDevice);
-
-        // Initialize all features (navbar fix removed)
-        initMobileMenu();
-        initHeaderScroll();
-        initSmoothScroll();
-        fixAnchorOnLoad();
-        initActiveSection();
-        initScrollAnimations();
-        fixMobileViewportHeight();
-        initBackToTop();
-
-        if (isTouchDevice) {
-            preventDoubleTapZoom();
-        }
-
-        console.log('✅ Portfolio initialized successfully (navbar scrolls normally)!');
-    };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, Postman)
+    if (!origin) {
+      return callback(null, true);
+    }
+    
+    // Allow localhost and development origins
+    const isDevelopment = 
+      !process.env.NODE_ENV || 
+      process.env.NODE_ENV === 'development' ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1');
+    
+    if (isDevelopment) {
+      return callback(null, true);
+    }
+    
+    // Check allowed origins in production
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-        init();
+      console.error(`🚫 CORS blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
     }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Access-Control-Allow-Headers'
+  ],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  maxAge: 86400
+};
 
-    // Optional debug object
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        window.portfolioDebug = {
-            version: '3.0.0-mobile-clean',
-            detectTouchDevice
-        };
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+/**
+ * Rate Limiting
+ */
+const apiLimiter = rateLimit({
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
+  message: {
+    success: false,
+    message: 'Too many requests from this IP, please try again later.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: false,
+  keyGenerator: (req) => req.ip
+});
+
+const contactLimiter = rateLimit({
+  windowMs: parseInt(process.env.RATE_LIMIT_CONTACT_WINDOW) || 60 * 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_CONTACT_MAX) || 5,
+  message: {
+    success: false,
+    message: 'Too many contact form submissions. Please try again later.'
+  },
+  skipFailedRequests: true
+});
+
+app.use('/api/', apiLimiter);
+app.post('/api/contact', contactLimiter);
+
+/**
+ * Logging Middleware
+ */
+const logFormat = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
+app.use(morgan(logFormat, {
+  stream: {
+    write: (message) => {
+      console.log(message.trim());
     }
-})();
+  }
+}));
+
+/**
+ * Body Parsing Middleware
+ */
+app.use(express.json({ 
+  limit: '10mb',
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}));
+app.use(express.urlencoded({ 
+  extended: true, 
+  limit: '10mb'
+}));
+
+/**
+ * Static Files
+ */
+// Serve from public directory (for production)
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+  }
+}));
+
+/**
+ * API Routes
+ */
+app.use('/api', apiRoutes);
+
+/**
+ * Database Health Check Endpoint
+ */
+app.get('/api/db/health', async (req, res) => {
+  try {
+    const health = await connectDB.healthCheck();
+    res.json({
+      success: true,
+      database: health.status,
+      timestamp: health.timestamp,
+      ...health
+    });
+  } catch (error) {
+    res.status(503).json({
+      success: false,
+      message: 'Database connection failed',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * SPA Fallback
+ */
+app.get('*', (req, res, next) => {
+  // Skip API routes
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  
+  // Skip files with extensions
+  if (req.path.match(/\.\w+$/)) {
+    return next();
+  }
+  
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+/**
+ * 404 Handler
+ */
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: 'Resource not found',
+    path: req.path,
+    method: req.method
+  });
+});
+
+/**
+ * Global Error Handler
+ */
+app.use((err, req, res, next) => {
+  console.error('❌ Server Error:', err.message);
+  console.error('Stack:', err.stack);
+  
+  if (err.message === 'Not allowed by CORS') {
+    return res.status(403).json({
+      success: false,
+      message: 'CORS policy violation',
+      allowedOrigins: allowedOrigins,
+      yourOrigin: req.headers.origin
+    });
+  }
+  
+  if (err.status === 429) {
+    return res.status(429).json({
+      success: false,
+      message: 'Too many requests',
+      retryAfter: err.retryAfter
+    });
+  }
+  
+  const statusCode = err.statusCode || 500;
+  const message = process.env.NODE_ENV === 'production' 
+    ? 'Something went wrong!' 
+    : err.message;
+  
+  res.status(statusCode).json({
+    success: false,
+    message: message,
+    error: process.env.NODE_ENV === 'development' ? {
+      name: err.name,
+      message: err.message,
+      stack: err.stack
+    } : undefined
+  });
+});
+
+/**
+ * Start Server (Local Development Only)
+ */
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.log('\n' + '='.repeat(70));
+    console.log('🚀 AI BRAIN PORTFOLIO SERVER');
+    console.log('='.repeat(70));
+    console.log(`📍 Port: ${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔗 Local: http://localhost:${PORT}`);
+    console.log(`📁 Public: ${path.join(__dirname, 'public')}`);
+    console.log('='.repeat(70));
+    console.log('\n📋 Available Endpoints:');
+    console.log('   GET  /api/health          - Health check');
+    console.log('   GET  /api/config          - Configuration');
+    console.log('   GET  /api/stats           - Statistics');
+    console.log('   POST /api/contact         - Contact form');
+    console.log('   GET  /api/projects        - Portfolio projects');
+    console.log('   GET  /api/db/health       - Database health');
+    console.log('='.repeat(70) + '\n');
+  });
+
+  /**
+   * Graceful Shutdown
+   */
+  const gracefulShutdown = async (signal) => {
+    console.log(`\n🔄 Received ${signal}. Starting graceful shutdown...`);
+    
+    try {
+      server.close(() => {
+        console.log('✅ HTTP server closed');
+      });
+      
+      await connectDB.disconnect();
+      
+      console.log('👋 Graceful shutdown completed');
+      process.exit(0);
+      
+    } catch (error) {
+      console.error('❌ Error during shutdown:', error);
+      process.exit(1);
+    }
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+  process.on('uncaughtException', (error) => {
+    console.error('💥 Uncaught Exception:', error);
+    process.exit(1);
+  });
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('💥 Unhandled Rejection at:', promise, 'reason:', reason);
+  });
+}
+
+/**
+ * Export for Vercel Serverless Functions
+ */
+module.exports = app;
